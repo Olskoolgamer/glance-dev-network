@@ -1,0 +1,35 @@
+gdn: 1
+id: ups-tracker
+version: 0.1.0
+name: UPS Tracker
+author: glance-led
+description: Where your UPS package is right now — delivery milestone, last scan location, and the estimated delivery date. Reads Ship24's tracking API, which serves UPS scans over a plain GET.
+category: Utility
+entry: app.star
+width: 128
+height: 32
+# Courier scans land every few hours at best; the response is cached just under
+# this, so a re-render never re-hits the API.
+refresh: 900
+pages: [main]
+inputs:
+  # No '_' or '-' in input keys: they delimit the render descriptor, so a value
+  # under such a key never reaches the app.
+  - key: apikey
+    type: string
+    app_input_type: api-key
+    label: Ship24 API key
+    default: ""
+    help: From dashboard.ship24.com/integrations/api-keys. Stored encrypted. UPS's own API can't be used here — it mints tokens over POST, and apps may only GET.
+  - key: tracking
+    type: string
+    app_input_type: free-text
+    label: UPS tracking number
+    default: ""
+    help: e.g. 1Z999AA10123456784. The number must already have a Ship24 tracker — see the note at the top of app.star. This panel reads a tracker, it cannot create one.
+  - key: label
+    type: string
+    app_input_type: free-text
+    label: Package name
+    default: ""
+    help: Optional short name for the header, e.g. LAPTOP. Blank shows the last 4 of the tracking number.
