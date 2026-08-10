@@ -1,0 +1,14 @@
+gdn: 1
+id: unix-clock-scroll
+version: 0.1.0
+name: Unix Epoch Clock (Scroll)
+author: glance-led-dev
+description: Seconds since 1970, plus a countdown to the next round-number moment.
+category: Time
+entry: app.star
+
+width: 192
+height: 32
+refresh: 60
+
+pages: [epoch, milestone]
