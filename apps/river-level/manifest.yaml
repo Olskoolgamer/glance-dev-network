@@ -1,0 +1,28 @@
+gdn: 1
+id: river-level
+version: 0.1.0
+name: River Level
+author: glance-led-dev
+description: Live gauge height for any USGS river station — a flood watch for your creek.
+category: Science
+entry: app.star
+
+width: 64
+height: 32
+refresh: 900
+
+pages: [level]
+
+inputs:
+  - key: site
+    type: string
+    app_input_type: free-text
+    label: USGS site number
+    default: "01646500"
+    help: Find it on the station's USGS page, e.g. 01646500 for the Potomac at Little Falls.
+  - key: flood
+    type: number
+    app_input_type: free-text
+    label: Flood stage (ft)
+    default: 10
+    help: Gauge height considered flood stage, used to colour the reading.
