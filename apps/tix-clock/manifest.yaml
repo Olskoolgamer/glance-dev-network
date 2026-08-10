@@ -1,0 +1,22 @@
+gdn: 1
+id: tix-clock
+version: 0.1.0
+name: TIX Clock
+author: glance-led-dev
+description: Four fields of dots — count the lit ones to read the time.
+category: Time
+entry: app.star
+
+width: 64
+height: 32
+refresh: 60
+
+pages: [tix]
+
+inputs:
+  - key: zip
+    type: string
+    app_input_type: free-text
+    label: Zip code
+    default: "10001"
+    help: US zip code. Sets your timezone, daylight saving included.
