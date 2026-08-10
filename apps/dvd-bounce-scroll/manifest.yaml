@@ -1,0 +1,22 @@
+gdn: 1
+id: dvd-bounce-scroll
+version: 0.1.0
+name: Corner Watch (Scroll)
+author: glance-led-dev
+description: The bouncing logo, plus an exact count of how many times it has actually hit a corner.
+category: Fun
+entry: app.star
+
+width: 192
+height: 32
+refresh: 60
+
+pages: [bounce, record]
+
+inputs:
+  - key: label
+    type: string
+    app_input_type: free-text
+    label: Logo text
+    default: "GLANCE"
+    help: Up to 8 characters. The panel fonts are uppercase only.
