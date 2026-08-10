@@ -1,0 +1,28 @@
+gdn: 1
+id: vercel-deploys-scroll
+version: 0.1.0
+name: Vercel Deploys (Scroll)
+author: glance-led-dev
+description: Whether the last deploy went green, and how long ago it landed.
+category: Other
+entry: app.star
+
+width: 192
+height: 32
+refresh: 300
+
+pages: [latest]
+
+inputs:
+  - key: apikey
+    type: string
+    app_input_type: api-key
+    label: Vercel token
+    default: ""
+    help: Account Settings -> Tokens.
+  - key: project
+    type: string
+    app_input_type: free-text
+    label: Project
+    default: ""
+    help: Optional. Limits to one project name.
