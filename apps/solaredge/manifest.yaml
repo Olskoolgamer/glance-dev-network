@@ -1,0 +1,28 @@
+gdn: 1
+id: solaredge
+version: 0.1.0
+name: SolarEdge
+author: glance-led-dev
+description: What your solar array is making right now, and what it has made today.
+category: Other
+entry: app.star
+
+width: 64
+height: 32
+refresh: 900
+
+pages: [output]
+
+inputs:
+  - key: siteid
+    type: string
+    app_input_type: free-text
+    label: Site ID
+    default: ""
+    help: The numeric site id from your monitoring URL.
+  - key: apikey
+    type: string
+    app_input_type: api-key
+    label: API key
+    default: ""
+    help: Admin -> Site Access -> API Access.
