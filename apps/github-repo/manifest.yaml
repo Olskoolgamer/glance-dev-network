@@ -1,0 +1,22 @@
+gdn: 1
+id: github-repo
+version: 0.1.0
+name: GitHub Repo
+author: glance-led-dev
+description: Stars, forks and open issues for any public repository.
+category: Other
+entry: app.star
+
+width: 64
+height: 32
+refresh: 1800
+
+pages: [stats]
+
+inputs:
+  - key: repo
+    type: string
+    app_input_type: free-text
+    label: Repository
+    default: "glance-led-dev/glance-dev-network"
+    help: owner/name of any public repository.
