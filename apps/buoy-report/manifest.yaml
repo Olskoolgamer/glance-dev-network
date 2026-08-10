@@ -1,0 +1,25 @@
+gdn: 1
+id: buoy-report
+version: 0.1.0
+name: Buoy Report
+author: glance-led-dev
+description: Live wind, waves and water temperature straight off an NDBC ocean buoy.
+category: Weather
+entry: app.star
+
+width: 64
+height: 32
+refresh: 1800
+
+pages: [buoy]
+
+assets:
+  - BUOY.png
+
+inputs:
+  - key: station
+    type: string
+    app_input_type: free-text
+    label: NDBC station
+    default: "41013"
+    help: Station id from ndbc.noaa.gov, e.g. 41013 or 46042.
