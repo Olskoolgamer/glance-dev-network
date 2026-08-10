@@ -1,0 +1,22 @@
+gdn: 1
+id: sidereal-clock
+version: 0.1.0
+name: Sidereal Clock
+author: glance-led-dev
+description: Local sidereal time — the sky's clock, which the stars actually keep.
+category: Science
+entry: app.star
+
+width: 64
+height: 32
+refresh: 60
+
+pages: [lst]
+
+inputs:
+  - key: zip
+    type: string
+    app_input_type: free-text
+    label: Zip code
+    default: "10001"
+    help: US zip code. Sets your timezone, daylight saving included.
