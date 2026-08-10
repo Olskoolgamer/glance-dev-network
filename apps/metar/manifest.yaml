@@ -1,0 +1,25 @@
+gdn: 1
+id: metar
+version: 0.1.0
+name: METAR
+author: glance-led-dev
+description: Live airport weather with the flight category pilots actually fly by.
+category: Weather
+entry: app.star
+
+width: 64
+height: 32
+refresh: 900
+
+pages: [report]
+
+assets:
+  - PLANE.png
+
+inputs:
+  - key: station
+    type: string
+    app_input_type: free-text
+    label: ICAO code
+    default: "KJFK"
+    help: Four-letter airport identifier, e.g. KJFK or EGLL.
