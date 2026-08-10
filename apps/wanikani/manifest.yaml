@@ -1,0 +1,22 @@
+gdn: 1
+id: wanikani
+version: 0.1.0
+name: WaniKani
+author: glance-led-dev
+description: Reviews waiting now, lessons queued, and when the next batch unlocks.
+category: Other
+entry: app.star
+
+width: 64
+height: 32
+refresh: 600
+
+pages: [queue]
+
+inputs:
+  - key: apikey
+    type: string
+    app_input_type: api-key
+    label: WaniKani API token
+    default: ""
+    help: Settings -> API Tokens -> read-only is enough.
