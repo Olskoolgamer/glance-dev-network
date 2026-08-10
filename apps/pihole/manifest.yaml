@@ -1,0 +1,28 @@
+gdn: 1
+id: pihole
+version: 0.1.0
+name: Pi-hole
+author: glance-led-dev
+description: How much of your network's DNS traffic Pi-hole blocked today.
+category: Other
+entry: app.star
+
+width: 64
+height: 32
+refresh: 300
+
+pages: [summary]
+
+inputs:
+  - key: baseurl
+    type: string
+    app_input_type: free-text
+    label: Pi-hole URL
+    default: "http://pi.hole"
+    help: Base URL of the admin interface, no trailing slash.
+  - key: apikey
+    type: string
+    app_input_type: api-key
+    label: API token
+    default: ""
+    help: Settings -> API -> Show API token.
