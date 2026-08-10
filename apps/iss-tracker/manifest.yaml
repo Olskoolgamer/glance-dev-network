@@ -1,0 +1,22 @@
+gdn: 1
+id: iss-tracker
+version: 0.1.0
+name: ISS Tracker
+author: glance-led-dev
+description: Where the International Space Station is right now, and how far it is from you.
+category: Science
+entry: app.star
+
+width: 64
+height: 32
+refresh: 300
+
+pages: [position]
+
+inputs:
+  - key: zip
+    type: string
+    app_input_type: free-text
+    label: Zip code
+    default: "10001"
+    help: US zip code. Sets your timezone, daylight saving included.
