@@ -1,0 +1,31 @@
+gdn: 1
+id: elementary-ca-scroll
+version: 0.1.0
+name: Elementary Automata (Scroll)
+author: glance-led-dev
+description: Wolfram's one-dimensional automata — chaotic Rule 30, fractal Rule 90 and Turing-complete Rule 110, one per page.
+category: Science
+entry: app.star
+
+width: 192
+height: 32
+refresh: 900
+
+pages: [rule30, rule90, rule110]
+
+inputs:
+  - key: seed
+    type: choice
+    app_input_type: dropdown
+    label: Starting row
+    default: "AUTO"
+    help: >-
+      SINGLE grows one classic triangle. SPACED repeats it across a wide panel.
+      RANDOM fills the width with texture. AUTO picks what suits the panel.
+    choices: ["AUTO", "SINGLE", "SPACED", "RANDOM"]
+  - key: palette
+    type: choice
+    app_input_type: dropdown
+    label: Palette
+    default: "EMBER"
+    choices: ["EMBER", "ICE", "ACID", "MONO"]
