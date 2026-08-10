@@ -1,0 +1,22 @@
+gdn: 1
+id: crypto-prices-scroll
+version: 0.1.0
+name: Crypto Prices (Scroll)
+author: glance-led-dev
+description: Live prices and 24-hour moves for the coins you pick.
+category: Finance
+entry: app.star
+
+width: 192
+height: 32
+refresh: 600
+
+pages: [prices]
+
+inputs:
+  - key: coins
+    type: string
+    app_input_type: free-text
+    label: Coins
+    default: "bitcoin,ethereum,solana"
+    help: CoinGecko ids, comma separated. Up to four are shown.
