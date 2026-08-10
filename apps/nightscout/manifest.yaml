@@ -1,0 +1,34 @@
+gdn: 1
+id: nightscout
+version: 0.1.0
+name: Nightscout Glucose
+author: glance-led-dev
+description: Live blood glucose with trend arrow, from your own Nightscout site.
+category: Other
+entry: app.star
+
+width: 64
+height: 32
+refresh: 300
+
+pages: [glucose]
+
+inputs:
+  - key: baseurl
+    type: string
+    app_input_type: free-text
+    label: Nightscout URL
+    default: "https://yoursite.herokuapp.com"
+    help: Your Nightscout site, no trailing slash.
+  - key: apikey
+    type: string
+    app_input_type: api-key
+    label: Access token
+    default: ""
+    help: Optional, if your site requires one.
+  - key: units
+    type: string
+    app_input_type: free-text
+    label: Units
+    default: "MGDL"
+    help: MGDL or MMOL.
