@@ -1,0 +1,40 @@
+gdn: 1
+id: home-assistant
+version: 0.1.0
+name: Home Assistant
+author: glance-led-dev
+description: Any Home Assistant entity on the panel — a sensor, a thermostat, a door, whatever matters.
+category: Other
+entry: app.star
+
+width: 64
+height: 32
+refresh: 300
+
+pages: [entity]
+
+inputs:
+  - key: baseurl
+    type: string
+    app_input_type: free-text
+    label: Base URL
+    default: "http://homeassistant.local:8123"
+    help: Where the panel can reach Home Assistant, no trailing slash.
+  - key: apikey
+    type: string
+    app_input_type: api-key
+    label: Long-lived token
+    default: ""
+    help: Profile -> Security -> Long-lived access tokens.
+  - key: entity
+    type: string
+    app_input_type: free-text
+    label: Entity id
+    default: "sensor.outside_temperature"
+    help: e.g. sensor.outside_temperature or binary_sensor.front_door.
+  - key: label
+    type: string
+    app_input_type: free-text
+    label: Label
+    default: ""
+    help: Optional. Defaults to the entity's friendly name.
