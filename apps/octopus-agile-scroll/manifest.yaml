@@ -1,0 +1,28 @@
+gdn: 1
+id: octopus-agile-scroll
+version: 0.1.0
+name: Octopus Agile (Scroll)
+author: glance-led-dev
+description: The current and next half-hour Agile electricity price, and when the cheapest slot lands.
+category: Other
+entry: app.star
+
+width: 192
+height: 32
+refresh: 900
+
+pages: [price]
+
+inputs:
+  - key: product
+    type: string
+    app_input_type: free-text
+    label: Product code
+    default: "AGILE-24-10-01"
+    help: From the Octopus product list.
+  - key: region
+    type: string
+    app_input_type: free-text
+    label: Region letter
+    default: "C"
+    help: Your DNO region, A-P. C is London.
