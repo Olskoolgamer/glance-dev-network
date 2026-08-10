@@ -1,0 +1,28 @@
+gdn: 1
+id: digital-rain-scroll
+version: 0.1.0
+name: Digital Rain (Scroll)
+author: glance-led-dev
+description: Glyph columns falling down the panel with fading trails, reseeded every refresh.
+category: Fun
+entry: app.star
+
+width: 192
+height: 32
+refresh: 60
+
+pages: [main]
+
+inputs:
+  - key: palette
+    type: choice
+    app_input_type: dropdown
+    label: Color
+    default: "GREEN"
+    choices: ["GREEN", "AMBER", "ICE", "MAGENTA"]
+  - key: density
+    type: choice
+    app_input_type: dropdown
+    label: Density
+    default: "MEDIUM"
+    choices: ["SPARSE", "MEDIUM", "HEAVY"]
