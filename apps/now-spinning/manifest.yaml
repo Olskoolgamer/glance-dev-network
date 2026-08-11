@@ -1,0 +1,31 @@
+gdn: 1
+id: now-spinning
+version: 0.1.0
+name: Now Spinning
+author: glance-led-dev
+description: "What is playing in the room, from your Last.fm scrobbles."
+category: Entertainment
+entry: app.star
+
+width: 64
+height: 32
+refresh: 60
+
+pages: [track]
+
+assets:
+  - VINYL.png
+
+inputs:
+  - key: apikey
+    type: string
+    app_input_type: api-key
+    label: Last.fm API key
+    default: ""
+    help: Free from last.fm/api/account/create.
+  - key: user
+    type: string
+    app_input_type: free-text
+    label: Last.fm username
+    default: ""
+    help: Your Last.fm username.
