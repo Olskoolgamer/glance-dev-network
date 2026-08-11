@@ -1,0 +1,14 @@
+gdn: 1
+id: on-this-day-scroll
+version: 0.1.0
+name: On This Day (Scroll)
+author: glance-led-dev
+description: "What happened on today's date, from Wikipedia's curated selection."
+category: Entertainment
+entry: app.star
+
+width: 192
+height: 32
+refresh: 3600
+
+pages: [first, second, third]
