@@ -1,0 +1,31 @@
+gdn: 1
+id: fantasy-matchup
+version: 0.1.0
+name: Fantasy Matchup
+author: glance-led-dev
+description: "Your Sleeper fantasy matchup — live score against your opponent, with a tug-of-war bar."
+category: Sports
+entry: app.star
+
+width: 64
+height: 32
+refresh: 300
+
+pages: [matchup]
+
+assets:
+  - FOOTBALL.png
+
+inputs:
+  - key: league
+    type: string
+    app_input_type: free-text
+    label: League ID
+    default: ""
+    help: Sleeper league id from the app URL.
+  - key: user
+    type: string
+    app_input_type: free-text
+    label: Username
+    default: ""
+    help: Your Sleeper username.
