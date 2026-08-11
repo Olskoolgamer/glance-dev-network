@@ -1,0 +1,25 @@
+gdn: 1
+id: mlb-gameday
+version: 0.1.0
+name: MLB Gameday
+author: glance-led-dev
+description: "Your team's game — runners on base, outs and the count, drawn on a real diamond."
+category: Sports
+entry: app.star
+
+width: 64
+height: 32
+refresh: 60
+
+pages: [game]
+
+assets:
+  - DIAMOND.png
+
+inputs:
+  - key: team
+    type: choice
+    app_input_type: dropdown
+    label: Team
+    default: "NYY"
+    choices: ["ARI", "ATL", "BAL", "BOS", "CHC", "CWS", "CIN", "CLE", "COL", "DET", "HOU", "KC", "LAA", "LAD", "MIA", "MIL", "MIN", "NYM", "NYY", "OAK", "PHI", "PIT", "SD", "SF", "SEA", "STL", "TB", "TEX", "TOR", "WSH"]
