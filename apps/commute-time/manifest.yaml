@@ -1,0 +1,43 @@
+gdn: 1
+id: commute-time
+version: 0.1.0
+name: Commute
+author: glance-led-dev
+description: "Live drive time to work, the traffic penalty, and when you need to leave."
+category: Other
+entry: app.star
+
+width: 64
+height: 32
+refresh: 600
+
+pages: [drive]
+
+assets:
+  - CAR.png
+
+inputs:
+  - key: apikey
+    type: string
+    app_input_type: api-key
+    label: TomTom API key
+    default: ""
+    help: Free key from developer.tomtom.com.
+  - key: origin
+    type: string
+    app_input_type: free-text
+    label: "From (lat,lon)"
+    default: ""
+    help: "e.g. 40.7128,-74.0060"
+  - key: dest
+    type: string
+    app_input_type: free-text
+    label: "To (lat,lon)"
+    default: ""
+    help: "e.g. 40.7484,-73.9857"
+  - key: arrive
+    type: string
+    app_input_type: free-text
+    label: Target arrival
+    default: "09:00"
+    help: "24h local time, e.g. 09:00."
