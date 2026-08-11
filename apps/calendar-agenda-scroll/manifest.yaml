@@ -1,0 +1,31 @@
+gdn: 1
+id: calendar-agenda-scroll
+version: 0.1.0
+name: Calendar (Scroll)
+author: glance-led-dev
+description: "Your next events from any iCal feed — Google, school, work, Airbnb."
+category: Time
+entry: app.star
+
+width: 192
+height: 32
+refresh: 900
+
+pages: [agenda]
+
+assets:
+  - CALENDAR.png
+
+inputs:
+  - key: url
+    type: string
+    app_input_type: free-text
+    label: iCal URL
+    default: ""
+    help: "Any .ics feed. In Google Calendar: Settings, then Secret address in iCal format."
+  - key: utcoffset
+    type: number
+    app_input_type: free-text
+    label: UTC offset (hours)
+    default: -4
+    help: Used to decide what counts as today.
