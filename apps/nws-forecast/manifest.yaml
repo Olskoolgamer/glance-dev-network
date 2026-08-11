@@ -1,0 +1,31 @@
+gdn: 1
+id: nws-forecast
+version: 0.1.0
+name: NWS Forecast
+author: glance-led-dev
+description: "The National Weather Service forecast in its own words, not a code number."
+category: Weather
+entry: app.star
+
+width: 64
+height: 32
+refresh: 1800
+
+pages: [now, later]
+
+assets:
+  - SUN.png
+  - CLOUD.png
+  - PARTLY.png
+  - RAIN.png
+  - SNOW.png
+  - STORM.png
+  - FOG.png
+
+inputs:
+  - key: zip
+    type: string
+    app_input_type: free-text
+    label: Zip code
+    default: "10001"
+    help: US zip code. NWS covers the US only.
