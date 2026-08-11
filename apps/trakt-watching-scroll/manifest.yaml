@@ -1,0 +1,28 @@
+gdn: 1
+id: trakt-watching-scroll
+version: 0.1.0
+name: Trakt (Scroll)
+author: glance-led-dev
+description: "What you are watching right now, straight off your Trakt account."
+category: Entertainment
+entry: app.star
+
+width: 192
+height: 32
+refresh: 120
+
+pages: [now]
+
+inputs:
+  - key: apikey
+    type: string
+    app_input_type: api-key
+    label: Trakt client ID
+    default: ""
+    help: Create an app at trakt.tv/oauth/applications.
+  - key: user
+    type: string
+    app_input_type: free-text
+    label: Username
+    default: ""
+    help: Your Trakt username or slug.
