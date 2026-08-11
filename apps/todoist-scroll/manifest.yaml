@@ -1,0 +1,22 @@
+gdn: 1
+id: todoist-scroll
+version: 0.1.0
+name: Todoist (Scroll)
+author: glance-led-dev
+description: "What is actually due today, and how much of it is overdue."
+category: Other
+entry: app.star
+
+width: 192
+height: 32
+refresh: 600
+
+pages: [today]
+
+inputs:
+  - key: apikey
+    type: string
+    app_input_type: api-key
+    label: Todoist API token
+    default: ""
+    help: "Settings -> Integrations -> Developer -> API token."
