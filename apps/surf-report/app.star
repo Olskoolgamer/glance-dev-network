@@ -144,13 +144,33 @@ def surf(c, ctx):
     c.image("WAVE.png", 2, c.height - n + 4, w = n, h = n)
 
     if c.width >= 128:
-        c.text(str(int(height * 10) / 10.0) + unit, 30, 3, font = "16x20",
-               color = "#DCF0FF")
-        c.text(v[0], c.width - 6, 3, font = "10x16", color = v[1],
+        # Two columns, both filled top to bottom. Before, the height sat in a
+        # 16x20 at the top left with the town tucked under it, and the right
+        # held only a verdict and a swell line -- which left a dead block
+        # through the middle of the panel and a bare strip along the bottom.
+        #
+        # The town moves into the right column so the three secondary readings
+        # stack there (0-5, 7-22, 24-31), and the height takes whatever font
+        # actually fits the space that leaves. It lands on 16x24 for a normal
+        # reading instead of 16x20, so the hero number grows into the gap
+        # rather than the gap staying empty.
+        htxt = str(int(height * 10) / 10.0) + unit
+        town = clip(c, g[2], "4x5", 70)
+        rcol = c.text_width(v[0], "10x16")
+        if c.text_width(town, "4x5") > rcol:
+            rcol = c.text_width(town, "4x5")
+        swell = str(int(period)) + "S " + compass(deg)
+        if c.text_width(swell, "6x8") > rcol:
+            rcol = c.text_width(swell, "6x8")
+
+        c.text(town, c.width - 6, 0, font = "4x5", color = "#4E7A9C",
                align = "right")
-        c.text(str(int(period)) + "S " + compass(deg), c.width - 6, 21,
-               font = "6x8", color = "#7FB6E8", align = "right")
-        c.text(clip(c, g[2], "4x5", 60), 30, 25, font = "4x5", color = "#4E7A9C")
+        c.text(v[0], c.width - 6, 7, font = "10x16", color = v[1],
+               align = "right")
+        c.text(swell, c.width - 6, 24, font = "6x8", color = "#7FB6E8",
+               align = "right")
+        c.text_fit(htxt, 30, 3, ["19x28", "16x24", "16x20", "10x16"],
+                   color = "#DCF0FF", maxw = c.width - rcol - 44)
     else:
         c.text_fit(str(int(height * 10) / 10.0) + unit, c.width - 2, 3,
                    ["16x20", "10x16"], color = "#DCF0FF", align = "right",
