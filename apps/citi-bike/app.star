@@ -259,7 +259,7 @@ def meter(c, x0, x1, total, ebikes, docks):
 def bikes(c, ctx):
     sid = resolve_station(ctx)
     if sid == "":
-        nodata(c, "PICK A STATION", "IN SETTINGS")
+        nodata(c, "NO STATION", "IN SETTINGS")
         return
 
     r = http.get(STATUS_URL, ttl_seconds = 120)

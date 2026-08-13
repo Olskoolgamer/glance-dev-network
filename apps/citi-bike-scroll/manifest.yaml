@@ -77,4 +77,4 @@ inputs:
       - "W 51 ST AT 6 AVE"
       - "W 59 ST AT 10 AVE"
       - "W BROADWAY AT SPRING ST"
-    help: "Sixty of the busiest docks. Counts come straight from Citi Bike's live GBFS feed."
+    help: "Every Citi Bike station. Counts come straight from the live GBFS feed."

@@ -1,12 +1,16 @@
-# Citi Bike
+# Indego
 #
-# Bikes and docks at one station, from the public GBFS feed. No key.
+# Bikes and docks at one Philadelphia Indego station, from the public GBFS
+# feed. No key.
 #
-# The station list is baked in rather than fetched. GBFS splits the data in
-# two: station_status carries the live counts, station_information carries the
-# names -- and information is ~1.36 MB for 2,509 stations, which is a lot of
-# bytes to move on every render just to turn an id into a label that never
-# changes. Only the status feed is fetched.
+# Same drawing code as apps/citi-bike -- GBFS is a standard, so the only real
+# differences are the feed URL and the station table. Indego reports its
+# e-bike count under num_bikes_available_types.electric where Citi Bike uses
+# num_ebikes_available; the reader below handles both.
+#
+# The station list is baked in rather than fetched, so only the status feed
+# (71 KB) is pulled rather than that plus station_information (126 KB) to turn
+# an id into a label that never changes.
 #
 # DESIGN. The panel is black and every label is a picture. A bike silhouette is
 # recognised before any word is read, so the word "BIKES" is not on the panel --
@@ -14,7 +18,7 @@
 # the resting colour for a live number, which leaves amber and red free to mean
 # something the moment they appear.
 
-STATUS_URL = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json"
+STATUS_URL = "https://gbfs.bcycle.com/bcycle_indego/station_status.json"
 
 # Citi blue, lifted from the brand's #0068A5: at LED gamma the darker blue
 # muddies against black and the frame stops reading as a frame.
@@ -94,66 +98,66 @@ RRWWWWWRR
 """
 
 STATIONS = {
-    "1 AVE AT E 44 ST": "66dc2172-0aca-11e7-82f6-3863bb44ef7c",
-    "1 AVE AT E 6 ST": "c37931bb-8571-4671-a9a8-f3cf23897680",
-    "10 AVE AT W 14 ST": "116dbc02-a3c1-4b65-9f73-2a09a2aa1379",
-    "2 AVE AT E 31 ST": "1893622839585237496",
-    "3 ST AT 3 AVE": "66de25bd-0aca-11e7-82f6-3863bb44ef7c",
-    "7 AVE AT CENTRAL PARK SOUTH": "b94cc90e-9ca2-4471-8371-23be051e0157",
-    "7 AVE S AT BLEECKER ST": "c466f15e-715f-411e-904e-1a71fb574cdd",
-    "8 AVE AT W 31 ST": "66ddbd20-0aca-11e7-82f6-3863bb44ef7c",
-    "8 AVE AT W 33 ST": "66dc686c-0aca-11e7-82f6-3863bb44ef7c",
-    "9 AVE AT W 18 ST": "66dc11a7-0aca-11e7-82f6-3863bb44ef7c",
-    "9 AVE AT W 22 ST": "66dc7a7d-0aca-11e7-82f6-3863bb44ef7c",
-    "9 AVE AT W 33 ST": "1869743938848725856",
-    "ALLEN ST AT HESTER ST": "1960020817312746312",
-    "BROADWAY AT E 14 ST": "66db6387-0aca-11e7-82f6-3863bb44ef7c",
-    "BROADWAY AT E 19 ST": "1975518133370609774",
-    "BROADWAY AT W 25 ST": "daefc84c-1b16-4220-8e1f-10ea4866fdc7",
-    "BROADWAY AT W 29 ST": "66dc4bd9-0aca-11e7-82f6-3863bb44ef7c",
-    "BROADWAY AT W 48 ST": "64f0f28c-bedc-42d5-b107-ecdd48fc30cd",
-    "BROADWAY AT W 53 ST": "66dc2c78-0aca-11e7-82f6-3863bb44ef7c",
-    "CENTRAL PARK S AT GRAND ARMY PLAZA": "1964061627836181486",
-    "CENTRE ST AT WORTH ST": "66dbe848-0aca-11e7-82f6-3863bb44ef7c",
-    "COOPER SQUARE AT ASTOR PL": "66ddd545-0aca-11e7-82f6-3863bb44ef7c",
-    "E 10 ST AT AVE A": "66dc1beb-0aca-11e7-82f6-3863bb44ef7c",
-    "E 11 ST AT 3 AVE": "a4368364-fa79-493c-8478-1d3471a6077f",
-    "E 11 ST AT BROADWAY": "66dbc860-0aca-11e7-82f6-3863bb44ef7c",
-    "E 13 ST AT AVE A": "d9160982-2d9b-4f08-9469-a559a7b62809",
-    "E 2 ST AT AVE B": "66db6aae-0aca-11e7-82f6-3863bb44ef7c",
-    "E 2 ST AT AVE C": "66db2f4c-0aca-11e7-82f6-3863bb44ef7c",
-    "E 20 ST AT 2 AVE": "66dc259a-0aca-11e7-82f6-3863bb44ef7c",
-    "E 24 ST AT PARK AVE S": "66dc6a86-0aca-11e7-82f6-3863bb44ef7c",
-    "E 27 ST AT 1 AVE": "66dc9223-0aca-11e7-82f6-3863bb44ef7c",
-    "E 33 ST AT 1 AVE": "61c82689-3f4c-495d-8f44-e71de8f04088",
-    "E 40 ST AT 5 AVE": "66db30e0-0aca-11e7-82f6-3863bb44ef7c",
-    "E 40 ST AT PARK AVE": "c638ec67-9ac0-416f-944f-619926144931",
-    "E 47 ST AT 2 AVE": "66db32fb-0aca-11e7-82f6-3863bb44ef7c",
-    "E 47 ST AT PARK AVE": "66dbc982-0aca-11e7-82f6-3863bb44ef7c",
-    "E 6 ST AT AVE B": "66db76a1-0aca-11e7-82f6-3863bb44ef7c",
-    "FDR DRIVE AT E 35 ST": "66dc7659-0aca-11e7-82f6-3863bb44ef7c",
-    "GANSEVOORT ST AT HUDSON ST": "1827839088308194240",
-    "GRAND ST AT SAMUEL DICKSTEIN PLAZA": "8cb0375d-bcb2-4c90-9773-41c3c8fdf8d8",
-    "GREENWICH ST AT W HOUSTON ST": "66dbbeda-0aca-11e7-82f6-3863bb44ef7c",
-    "LAFAYETTE ST AT ASTOR PL": "2245650716933709032",
-    "LAIGHT ST AT HUDSON ST": "66db402c-0aca-11e7-82f6-3863bb44ef7c",
-    "LEXINGTON AVE AT E 24 ST": "66dc8a3d-0aca-11e7-82f6-3863bb44ef7c",
-    "LEXINGTON AVE AT E 26 ST": "454b4a83-d0b1-42a2-8163-261e2a9d6ab9",
-    "OLD SLIP AT SOUTH ST": "ff2869f0-4381-4cf3-863e-a0d776ec53b4",
-    "PARK AVE AT E 41 ST": "66dc7f02-0aca-11e7-82f6-3863bb44ef7c",
-    "PARK AVE AT E 42 ST": "66dc8025-0aca-11e7-82f6-3863bb44ef7c",
-    "RIVERSIDE BLVD AT W 67 ST": "66dd51e6-0aca-11e7-82f6-3863bb44ef7c",
-    "RIVERSIDE DR AT W 78 ST": "66dd5407-0aca-11e7-82f6-3863bb44ef7c",
-    "VESEY ST AT GREENWICH ST": "1989279523593928720",
-    "W 20 ST AT 8 AVE": "66dc36c3-0aca-11e7-82f6-3863bb44ef7c",
-    "W 31 ST AT 7 AVE": "66dbe4db-0aca-11e7-82f6-3863bb44ef7c",
-    "W 34 ST AT 11 AVE": "66dc8382-0aca-11e7-82f6-3863bb44ef7c",
-    "W 37 ST AT BROADWAY": "341730d7-a61d-499d-8c07-fa015f644e54",
-    "W 41 ST AT 8 AVE": "66dc3f08-0aca-11e7-82f6-3863bb44ef7c",
-    "W 43 ST AT 10 AVE": "66dc7de9-0aca-11e7-82f6-3863bb44ef7c",
-    "W 51 ST AT 6 AVE": "66dc7b10-0aca-11e7-82f6-3863bb44ef7c",
-    "W 59 ST AT 10 AVE": "66dc0dab-0aca-11e7-82f6-3863bb44ef7c",
-    "W BROADWAY AT SPRING ST": "bde94a25-6089-4490-af3a-8cc5702230b8",
+    "10TH AT OXFORD": "bcycle_indego_3268",
+    "10TH AT PACKER": "bcycle_indego_3357",
+    "10TH AT PHILLIES": "bcycle_indego_3469",
+    "17TH AT GREEN": "bcycle_indego_3204",
+    "17TH AT JFK": "bcycle_indego_3205",
+    "17TH AT LOCUST": "bcycle_indego_3359",
+    "17TH AT PINE": "bcycle_indego_3063",
+    "17TH AT SPRING GARDEN": "bcycle_indego_3040",
+    "18TH AT JFK": "bcycle_indego_3021",
+    "18TH AT JFK CURBSIDE": "bcycle_indego_3333",
+    "18TH AT WASHINGTON CHEW PLAYGROUND": "bcycle_indego_3064",
+    "19TH AT LOMBARD": "bcycle_indego_3066",
+    "20TH AT MARKET": "bcycle_indego_3156",
+    "20TH AT SANSOM": "bcycle_indego_3462",
+    "21ST AT CATHARINE": "bcycle_indego_3012",
+    "21ST AT WINTER FRANKLIN INSTITUTE": "bcycle_indego_3014",
+    "23RD AT CHESTNUT": "bcycle_indego_3256",
+    "23RD AT FAIRMOUNT": "bcycle_indego_3051",
+    "23RD AT MARKET": "bcycle_indego_3473",
+    "23RD AT SOUTH": "bcycle_indego_3032",
+    "24TH AT CHRISTIAN": "bcycle_indego_3248",
+    "24TH AT RACE SRT": "bcycle_indego_3165",
+    "25TH AT LOCUST": "bcycle_indego_3163",
+    "27TH AT SOUTH": "bcycle_indego_3162",
+    "2ND AT MARKET": "bcycle_indego_3447",
+    "30TH STREET STATION EAST": "bcycle_indego_3161",
+    "34TH AT ARCH": "bcycle_indego_3249",
+    "34TH AT SPRUCE": "bcycle_indego_3208",
+    "38TH AT MARKET": "bcycle_indego_3160",
+    "38TH AT SPRUCE": "bcycle_indego_3159",
+    "3RD AT GIRARD": "bcycle_indego_3088",
+    "4TH AT CHRISTIAN": "bcycle_indego_3069",
+    "54TH AT CEDAR": "bcycle_indego_3338",
+    "56TH AT CHESTNUT": "bcycle_indego_3344",
+    "6TH AT BROWN": "bcycle_indego_3286",
+    "8TH AT SPRUCE": "bcycle_indego_3264",
+    "9TH AT LOCUST": "bcycle_indego_3052",
+    "BARNES FOUNDATION": "bcycle_indego_3116",
+    "BROAD AT CARPENTER": "bcycle_indego_3213",
+    "BROAD AT CHRISTIAN": "bcycle_indego_3086",
+    "BROAD AT ONTARIO TEMPLE HOSPITAL": "bcycle_indego_3353",
+    "BROAD AT OREGON": "bcycle_indego_3237",
+    "BROAD AT PATTISON BSL": "bcycle_indego_3188",
+    "BROAD AT REED": "bcycle_indego_3360",
+    "BROAD AT RITNER": "bcycle_indego_3197",
+    "CORINTHIAN AT POPLAR": "bcycle_indego_3211",
+    "CRESCENT PARK": "bcycle_indego_3181",
+    "FOGLIETTA PLAZA": "bcycle_indego_3049",
+    "FRONT AT CARPENTER": "bcycle_indego_3072",
+    "GIRARD STATION MFL": "bcycle_indego_3041",
+    "KELLY DRIVE GRANDSTAND": "bcycle_indego_3328",
+    "MOYAMENSING AT TASKER": "bcycle_indego_3100",
+    "MUNICIPAL SERVICES BUILDING PLAZA": "bcycle_indego_3004",
+    "PHILADELPHIA MUSEUM OF ART": "bcycle_indego_3057",
+    "RODIN MUSEUM": "bcycle_indego_3054",
+    "SCHUYLKILL BANKS PERGOLA": "bcycle_indego_3212",
+    "SPRING GARDEN STATION BSL": "bcycle_indego_3059",
+    "UNIVERSITY CITY STATION": "bcycle_indego_3020",
+    "WATER AT MIFFLIN": "bcycle_indego_3266",
+    "YORK AT ARAMINGO": "bcycle_indego_3275",
 }
 
 
@@ -264,7 +268,7 @@ def bikes(c, ctx):
 
     r = http.get(STATUS_URL, ttl_seconds = 120)
     if r["status_code"] != 200 or not r["json"]:
-        nodata(c, "NO BIKE DATA", "FEED UNREACHABLE")
+        nodata(c, "NO INDEGO DATA", "FEED UNREACHABLE")
         return
 
     found = None
