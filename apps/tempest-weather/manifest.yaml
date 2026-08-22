@@ -19,7 +19,7 @@ inputs:
     type: string
     app_input_type: api-key
     label: Tempest API token (tempestwx.com > Settings > Data Authorizations)
-  - key: elevation_ft
+  - key: elevationft
     type: number
     app_input_type: free-text
     label: Sensor elevation above sea level (ft)

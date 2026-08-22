@@ -1040,7 +1040,13 @@ def conditions(c, ctx):
         station_pressure = hpa_to_inhg(station_pressure_hpa)
     else:
         station_pressure = cur.get("station_pressure", 0.0)
-    elevation_ft = _n(ctx, "elevation_ft", 0.0)
+    # The setting key must be letters and digits only: input values ride a
+    # key-value_key-value render descriptor, so an underscore in the KEY is a
+    # delimiter and the value never arrives. Under the old `elevation_ft` this
+    # read 0.0 for everybody, which silently disabled the sea-level correction
+    # below -- a station at 5,000ft reported raw station pressure as if it were
+    # sea level.
+    elevation_ft = _n(ctx, "elevationft", 0.0)
     if elevation_ft > 0:
         pressure = sea_level_pressure(station_pressure, elevation_ft, obs0.get("air_temperature", cur.get("air_temperature", 0.0)))
     else:
