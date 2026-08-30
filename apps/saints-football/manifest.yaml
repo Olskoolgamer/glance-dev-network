@@ -1,0 +1,13 @@
+gdn: 1
+id: saints-football-live
+name: Saints Football Live
+width: 384
+height: 32
+refresh: 60
+assets:
+  - field_background.png
+pages:
+  - live
+  - scores
+  - stats
+  - injuries
