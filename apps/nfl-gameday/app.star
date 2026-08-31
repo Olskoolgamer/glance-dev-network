@@ -342,6 +342,7 @@ def unpack_event(ev, tid):
         "network": broadcast_of(comp),
         "odds": odds,
         "down": str(get(situation, "shortDownDistanceText", "")).upper(),
+        "possession": str(get(situation, "possession", "")),
     }
 
 def side_of(cr):
@@ -355,6 +356,7 @@ def side_of(cr):
             rec = str(get(r, "summary", ""))
             break
     return {
+        "id": str(dig(cr, ["team", "id"], "")),
         "abbr": str(get(team, "abbreviation", "?")).upper(),
         "score": str(s),
         "record": rec,
@@ -432,6 +434,41 @@ def chrome(c, team, label, meta, meta_color):
 
 # ---------------------------------------------------------------- pages
 
+def accent_of(abbr):
+    """A club's accent color by scoreboard abbreviation (for the opponent's
+    side of the card); a neutral slate when we don't know the club."""
+    stem = STEM_BY_ABBR.get(abbr, "")
+    for name in TEAMS:
+        if TEAMS[name][1] == stem:
+            return TEAMS[name][3]
+    return "#3C4043"
+
+# The possession marker: a 6x3 football beside the abbreviation of whichever
+# side has the ball, so a glance says who's driving without a word of text.
+BALL = [
+    " XXXX ",
+    "XXXXXX",
+    " XXXX ",
+]
+BALL_C = "#C87830"
+
+def wash(c, x0, x1, accent, toward_right):
+    """A near-black wash of a club's color behind its side of the game card —
+    16% of the accent fading to the black ground toward the center hero. This
+    is the catalog's sanctioned mood (never a bright fill), so no stroke is
+    needed on the text above it."""
+    lo = color.dim(accent, 16)
+    if toward_right:
+        c.gradient_rect(x0, 8, x1, 31, "black", lo)
+    else:
+        c.gradient_rect(x0, 8, x1, 31, lo, "black")
+
+def tint(c, accent):
+    """The list pages' version of the mood: the club color at 12% along the
+    top, gone to black by mid-panel. Drawn first; everything sits on top."""
+    c.gradient_rect(2, 0, 191, 18, color.dim(accent, 12), "black",
+                    horizontal = False)
+
 def crest(c, stem_or_abbr, x, y, size):
     """A club crest at its authored size — or the abbreviation as text when
     we have no crest for it (Pro Bowl sides, TBD opponents)."""
@@ -447,11 +484,13 @@ def game(c, ctx):
     ev, online = pick_event(ctx, team)
 
     if len(ev) == 0:
-        chrome(c, team, "GAMEDAY", "", DIM)
         if not online:
+            chrome(c, team, "GAMEDAY", "", DIM)
             rail(c, OFFLINE)
             message(c, "ESPN UNREACHABLE", "SCORES RETURN NEXT REFRESH")
         else:
+            tint(c, team["accent"])
+            chrome(c, team, "GAMEDAY", "", DIM)
             message(c, "NO GAMES SCHEDULED", "SEE YOU NEXT SEASON", "green")
         return
 
@@ -461,15 +500,28 @@ def game(c, ctx):
     parts = local_parts(when, off) if when >= 0 else ["", "", ""]
 
     if state == "in":
-        chrome(c, team, "GAMEDAY", "LIVE " + ev["detail"], "red")
+        chrome(c, team, "GAMEDAY", "", DIM)
+        # A red LIVE pill instead of plain meta text — the one page state
+        # allowed to shout. Badge width is text + 2px pad each side.
+        clock = clip(c, ev["detail"], "4x5", 48)
+        cw = c.text_width(clock, "4x5")
+        bx = SAFE_R - cw - 3 - (c.text_width("LIVE", "4x5") + 4)
+        bw = c.badge("LIVE", bx, 0, color = "white", bg = "red", font = "4x5")
+        c.text(clock, bx + bw + 3, 1, font = "4x5", color = "red")
     elif state == "post":
         chrome(c, team, "GAMEDAY", ev["detail"], DIM)
     else:
-        chrome(c, team, "GAMEDAY", parts[0] + " " + parts[1], INK)
+        when_day = "" if when < 0 else parts[0] + " " + parts[1]
+        if when >= 0 and (when + off * 60) // 86400 == (ctx.now.unix + off * 60) // 86400:
+            when_day = "TODAY"
+        chrome(c, team, "GAMEDAY", when_day, INK)
 
     # Matchup band, away at home's place: crests just inside the safe zone,
-    # abbreviations + records beside them, one hero in the middle.
+    # abbreviations + records beside them, one hero in the middle. Each side
+    # sits on a near-black wash of its own club color.
     away, home = ev["away"], ev["home"]
+    wash(c, 2, 78, accent_of(away["abbr"]), False)
+    wash(c, 114, 189, accent_of(home["abbr"]), True)
     crest(c, away["abbr"], SAFE_L, 8, 24)
     crest(c, home["abbr"], SAFE_R - 23, 8, 24)
 
@@ -489,6 +541,16 @@ def game(c, ctx):
     if home["record"] != "":
         c.text(clip(c, home["record"], "4x5", 26), 159, 21, font = "4x5",
                color = DIM, align = "right")
+
+    # Live: a football beside whoever has the ball. The hero's widest case
+    # ("45-42", 53px around x96) still leaves 5px before the home-side ball.
+    if state == "in" and ev["possession"] != "":
+        if ev["possession"] == away["id"]:
+            aw = c.text_width(away["abbr"], "6x8")
+            c.sprite(BALL, 33 + aw + 3, 12, color = BALL_C)
+        if ev["possession"] == home["id"]:
+            hw = c.text_width(home["abbr"], "6x8")
+            c.sprite(BALL, 159 - hw - 9, 12, color = BALL_C)
 
     # Center hero + footline. 62..130 is what's left between the abbr blocks;
     # "45-42" at 10x16 is 54px, so the ladder only drops for weird strings.
@@ -540,6 +602,7 @@ def results(c, ctx):
         stype = str(dig(evs[0], ["seasonType", "abbreviation"], "")).lower()
     season = {"pre": "PRESEASON", "post": "PLAYOFFS"}.get(stype, "SEASON")
 
+    tint(c, team["accent"])
     chrome(c, team, "RESULTS", standing if standing != "" else season, DIM)
 
     if len(games) == 0:
@@ -592,10 +655,15 @@ def team_abbr_of(team):
     return "?"
 
 # Injury statuses, worst news first: [chip text, color, sort rank].
+# "inactive" is checked before the generic buckets because it CONTAINS
+# "active" — and "active" itself appears in the feed for players who just
+# returned from an injury, which is good news, not amber news.
 def severity(status):
     s = str(status).lower()
     if s.find("reserve") >= 0 or s == "ir":
         return ["IR", "red", 0]
+    if s.find("inactive") >= 0:
+        return ["OUT", "red", 1]
     if s.find("out") >= 0:
         return ["OUT", "red", 1]
     if s.find("physically unable") >= 0 or s.find("pup") >= 0:
@@ -606,6 +674,8 @@ def severity(status):
         return ["QUES", "amber", 4]
     if s.find("day") >= 0:
         return ["DTD", "green", 5]
+    if s.find("active") >= 0:
+        return ["ACT", "green", 7]
     return [str(status).upper()[:4], "amber", 6]
 
 def injuries(c, ctx):
@@ -618,6 +688,7 @@ def injuries(c, ctx):
         message(c, "ESPN UNREACHABLE", "REPORT RETURNS NEXT REFRESH")
         return
 
+    tint(c, team["accent"])
     rows = []
     for item in lst(data, "injuries"):
         athlete = get(item, "athlete", {})
