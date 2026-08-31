@@ -11,9 +11,9 @@ entry: app.star
 width: 192
 height: 32
 
-# 120s keeps a live score fresh without hammering ESPN; every fetch's
-# ttl_seconds is tuned per feed in app.star (scoreboard 120, the rest slower).
-refresh: 120
+# One render every 10 minutes; every fetch's ttl_seconds is tuned per feed
+# in app.star (scoreboard 600 to match, the rest slower).
+refresh: 600
 
 pages: [game, results, injuries]
 

@@ -287,7 +287,7 @@ def local_parts(unix, off_min):
 # ---------------------------------------------------------------- fetching
 
 def espn(path, params, ttl):
-    """One GET against site.web.api.espn.com. ttl_seconds per feed: 120 for
+    """One GET against site.web.api.espn.com. ttl_seconds per feed: 600 for
     the live scoreboard (matches the manifest's refresh), slower elsewhere.
     Returns the decoded JSON dict, or None so pages can draw the offline card."""
     r = http.get(BASE + path, params = params, ttl_seconds = ttl)
@@ -378,7 +378,7 @@ def pick_event(ctx, team):
     it (that is where live scores are), else the club's next scheduled game,
     else its most recent completed one. Second value is False when every feed
     failed, so the page can tell "offline" from "no games"."""
-    sb = espn("/scoreboard", {}, 120)
+    sb = espn("/scoreboard", {}, 600)
     detail = espn("/teams/" + team["id"], {}, 600)
     online = sb != None or detail != None
     for ev in lst(sb, "events"):
@@ -711,9 +711,9 @@ def injuries(c, ctx):
         return
 
     # Three rows per look; the panel pages through the report on its own
-    # refresh clock (120 s), worst news in the first group.
+    # refresh clock (600 s), worst news in the first group.
     groups = (len(rows) + 2) // 3
-    g = (ctx.now.unix // 120) % groups
+    g = (ctx.now.unix // 600) % groups
     meta = str(len(rows)) + " LISTED"
     if groups > 1:
         meta = meta + "  " + str(g + 1) + "/" + str(groups)
